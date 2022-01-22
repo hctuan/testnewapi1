@@ -85,18 +85,17 @@ export default () => {
   const classes = useStyle();
 
   if (isLoading) return <Loading style={{ height: "calc(100vh - 40px)" }} />;
-  if (error) return <ErrorSection />;
+  if (error || data.status === "error")
+    return <ErrorSection reason={data.message || "unknown"} />;
 
-  const allArticles = data.articles;
-  const firstFourArticles = allArticles.slice(0, 4);
-  const restArticles = allArticles.slice(4, allArticles.length);
+  const articles = data.articles;
 
   return (
     <div className={classes.home}>
       <section className={classes.homeGridSection}>
         <div className={classes.title}>Top headlines</div>
         <div className={classes.homeGrid}>
-          {firstFourArticles.map((article: IArticle, index: number) => (
+          {articles.map((article: IArticle, index: number) => (
             <div
               key={`article-${index}`}
               className={`${classes.gridItem} item-${index}`}
